@@ -1,6 +1,8 @@
 from config import bot
 import sqlite3
 
+from telebot import types
+
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     connect = sqlite3.connect("user_id.db")
@@ -19,6 +21,8 @@ def send_welcome(message):
         bot.send_message(message.chat.id, 'hello')
     else:
         bot.send_message(message.chat.id,"такой пользователь уже есть ")
+
+
 
 
 
