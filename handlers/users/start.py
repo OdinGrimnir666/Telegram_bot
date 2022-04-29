@@ -1,7 +1,24 @@
 from config import bot
-
+import sqlite3
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.send_message(message.chat.id ,'hello')
+    connect = sqlite3.connect("user_id.db")
+    cursor = connect.cursor()
+    cursor.execute("""CREATE TABLE IF NOT EXISTS login_id(
+    id INTEGER
+    )""")
+    connect.commit()
+
+    cursor.execute(f"SELECT id FROM login_id Where id={message.chat.id}")
+    data=cursor.fetchone()
+    if data is None:
+        user_id = [message.chat.id]
+        cursor.execute('INSERT INTO login_id VALUES(?);', user_id)
+        connect.commit()
+        bot.send_message(message.chat.id, 'hello')
+    else:
+        bot.send_message(message.chat.id,"такой пользователь уже есть ")
+
+
 

@@ -12,4 +12,4 @@ bot=telebot.TeleBot(Token)
 
 
 
-Admin=['512416811']
+Admin=[512416811]
