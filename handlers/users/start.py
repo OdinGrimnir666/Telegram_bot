@@ -1,3 +1,5 @@
+from peewee import SqliteDatabase
+
 from config import bot
 import sqlite3
 
@@ -11,6 +13,7 @@ def send_welcome(message):
     id INTEGER
     )""")
     connect.commit()
+    db = SqliteDatabase('user_id.db')
 
     cursor.execute(f"SELECT id FROM login_id Where id={message.chat.id}")
     data=cursor.fetchone()
