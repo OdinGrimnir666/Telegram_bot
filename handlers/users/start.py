@@ -5,25 +5,27 @@ import sqlite3
 
 from telebot import types
 
+from db.user import User
+from keyboardMarkup.menu import menu_keyboard
+
+text_Start='Кафе Big Mama это вкусная еда, приветливый коллектив,быстрое обслуживание  и уютная атмосфера.'
+
+text_start_html="<b align='left' >Добро пожаловать в Кафе Big Mama в Киеве</b>\n" \
+                "<b align='left'>Кухня: Европейская, Американская, Мексиканская</b>\n" \
+                f"<i>{text_Start}</i>\n" \
+                "\n" \
+                "\n" \
+                "\n" \
+                '<b>Наш номер: 3800654343</b>'
+
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    connect = sqlite3.connect("user_id.db")
-    cursor = connect.cursor()
-    cursor.execute("""CREATE TABLE IF NOT EXISTS login_id(
-    id INTEGER
-    )""")
-    connect.commit()
-    db = SqliteDatabase('user_id.db')
-
-    cursor.execute(f"SELECT id FROM login_id Where id={message.chat.id}")
-    data=cursor.fetchone()
-    if data is None:
-        user_id = [message.chat.id]
-        cursor.execute('INSERT INTO login_id VALUES(?);', user_id)
-        connect.commit()
-        bot.send_message(message.chat.id, 'hello')
-    else:
-        bot.send_message(message.chat.id,"такой пользователь уже есть ")
+    try:
+        User.create(id=message.chat.id, fullname=f'{message.chat.username}',position=1)
+    except:
+        print("ops")
+    finally:
+        bot.send_photo(message.chat.id,open('big mama/contact.jpg','rb'),text_start_html,reply_markup=menu_keyboard(message))
 
 
 
