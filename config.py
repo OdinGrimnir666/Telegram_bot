@@ -2,7 +2,7 @@ import telebot
 
 from db.user import User
 
-Token='5304673872:AAGpP7uBVbUe3TZHLHKCfANRAJmqdxhSwJ4'
+Token=''
 
 
 from telebot import apihelper
